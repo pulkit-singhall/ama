@@ -7,7 +7,6 @@ import {
     Row,
     Section,
     Text,
-    Button,
 } from '@react-email/components';
 
 export default function EmailTemplate(username: string, verifyCode: string) {
@@ -34,11 +33,14 @@ export default function EmailTemplate(username: string, verifyCode: string) {
                 <Row>
                     <Text>
                         Thank you for registering. Please use the following verification
-                        code to complete your registration:
+                        code to verify your email.
                     </Text>
                 </Row>
                 <Row>
                     <Text>{verifyCode}</Text>
+                </Row>
+                <Row>
+                    <Text>This code is only valid for <b>15 minutes</b>.</Text>
                 </Row>
                 <Row>
                     <Text>

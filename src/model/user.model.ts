@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import bcrypt from "bcrypt";
 
 export interface MessageInterface extends Document{
     content: string;
@@ -55,5 +56,15 @@ const userSchema: Schema<UserInterface> = new Schema({
     },
     messages: [messageSchema],
 });
+
+userSchema.pre("save", async function () { 
+    if (this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+})
+
+userSchema.methods.comparePassword = async function (incomingPassword : string) {
+    return await bcrypt.compare(incomingPassword, this.password)
+}
 
 export const User = mongoose.models.User as mongoose.Model<UserInterface> || mongoose.model<UserInterface>("User", userSchema)
