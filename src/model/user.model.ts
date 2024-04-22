@@ -23,7 +23,7 @@ export interface UserInterface extends Document{
     email: string;
     password: string;
     verifyCode: string;
-    verifyCodeExpiry: Date;
+    verifyCodeExpiry: number;
     isVerified: boolean;
     messages: Array<MessageInterface>
 }
@@ -47,7 +47,7 @@ const userSchema: Schema<UserInterface> = new Schema({
         type: String,
     },
     verifyCodeExpiry: {
-        type: Date,
+        type: Number,
     },
     isVerified: {
         type: Boolean,
@@ -62,9 +62,5 @@ userSchema.pre("save", async function () {
         this.password = await bcrypt.hash(this.password, 10);
     }
 })
-
-userSchema.methods.comparePassword = async function (incomingPassword : string) {
-    return await bcrypt.compare(incomingPassword, this.password)
-}
 
 export const User = mongoose.models.User as mongoose.Model<UserInterface> || mongoose.model<UserInterface>("User", userSchema)
