@@ -22,10 +22,13 @@ export interface UserInterface extends Document{
     username: string;
     email: string;
     password: string;
-    verifyCode: string;
-    verifyCodeExpiry: number;
+    verifyEmailCode: string;
+    verifyEmailCodeExpiry: number;
     isVerified: boolean;
     messages: Array<MessageInterface>
+    forgotPasswordCode: string;
+    forgotPasswordCodeExpiry: number;
+    refreshToken: string;
 }
 
 const userSchema: Schema<UserInterface> = new Schema({
@@ -43,10 +46,10 @@ const userSchema: Schema<UserInterface> = new Schema({
         type: String,
         required: true,
     },
-    verifyCode: {
+    verifyEmailCode: {
         type: String,
     },
-    verifyCodeExpiry: {
+    verifyEmailCodeExpiry: {
         type: Number,
     },
     isVerified: {
@@ -55,6 +58,15 @@ const userSchema: Schema<UserInterface> = new Schema({
         default: false,
     },
     messages: [messageSchema],
+    forgotPasswordCode: {
+        type: String,
+    },
+    forgotPasswordCodeExpiry: {
+        type: Number,
+    },
+    refreshToken: {
+        type: String,
+    }
 });
 
 userSchema.pre("save", async function () { 

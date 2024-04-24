@@ -3,8 +3,9 @@ import dbConnect from "@/db/db";
 import { User } from "@/model/user.model";
 import ApiResponse from "@/types/apiResponse";
 import { signupSchema } from "@/schema/signup.schema";
+import { NextRequest } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     dbConnect.then((connection) => {
     }).catch((error) => {
         return Response.json({ error, detail: "error in database connection" })
@@ -21,21 +22,24 @@ export async function POST(req: Request) {
         if (userByUsername) {
             return Response.json(new ApiResponse(400, false, "username already exists", {}), { status: 400 })
         }
-        const verifyCode = Math.floor(100000 + Math.random() * 900000).toString()
-        const verifyCodeExpiry = Date.now() + 900000
+        const verifyEmailCode = Math.floor(100000 + Math.random() * 900000).toString()
+        const verifyEmailCodeExpiry = Date.now() + 900000
         const signupUser = await User.create({
             email,
             username,
             password,
             isVerified: false,
             messages: [],
-            verifyCodeExpiry, // 15 minutes validity
-            verifyCode,
+            verifyEmailCodeExpiry, // 15 minutes validity
+            verifyEmailCode,
+            refreshToken: "",
+            forgotPasswordCode: "",
+            forgotPasswordCodeExpiry: -1,
         })
         if (!signupUser) {
             return Response.json(new ApiResponse(500, false, "internal error in creating the user", {}), { status: 500 })
         }
-        const emailResult = await verifyEmail(email, username, verifyCode)
+        const emailResult = await verifyEmail(email, username, verifyEmailCode)
         if (!emailResult.success) {
             await User.deleteOne({ email })
             return Response.json(new ApiResponse(500, false, "error in sending verification email", {}), { status: 500 })

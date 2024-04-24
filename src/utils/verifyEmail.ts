@@ -17,6 +17,6 @@ export const verifyEmail = async (email: string, username: string, verifyCode: s
         });
         return new ApiResponse(200, true, "email sent", { data })
     } catch (error) {
-        return new ApiResponse(500, false, "email not sent", {})
+        return new ApiResponse(500, false, "email not sent", {error})
     }
 }
