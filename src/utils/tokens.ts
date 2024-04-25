@@ -11,10 +11,10 @@ const generateAccessToken = (id: any, email: string): string => {
     return token
 }
 
-const generateRefreshToken = (id: any): string => {
+const generateRefreshToken = (email: string): string => {
     const key = process.env.REFRESH_TOKEN_KEY
     const token = jwt.sign({
-        _id: id
+        email: email
     }, key!, {
         expiresIn: '5d',
     })

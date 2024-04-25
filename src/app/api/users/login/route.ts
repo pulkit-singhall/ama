@@ -5,14 +5,11 @@ import { signinSchema } from "@/schema/signin.schema";
 import { User } from "@/model/user.model";
 import bcrypt from "bcrypt";
 import { generateAccessToken, generateRefreshToken } from "@/utils/tokens";
-import { verifyTokens } from "@/middlewares/verifyTokens";
 
 export async function POST(req: NextRequest) {
     dbConnect.then((connection) => { }).catch((error) => {
         return Response.json(new ApiResponse(500, false, "database not connected", {error}))
     })
-
-    verifyTokens(req)
     
     try {
         const { email, password } = await req.json()
@@ -29,7 +26,7 @@ export async function POST(req: NextRequest) {
             return Response.json(new ApiResponse(400, false, "user password is wrong", {}))
         }
         const accessToken = generateAccessToken(existUser._id, existUser.email)
-        const refreshToken = generateRefreshToken(existUser._id)
+        const refreshToken = generateRefreshToken(existUser.email)
         existUser.refreshToken = refreshToken
         await existUser.save({ validateBeforeSave: false })
         const nextResponse = NextResponse.json(new ApiResponse(200, true, "user logged in", {}))
@@ -37,6 +34,6 @@ export async function POST(req: NextRequest) {
         nextResponse.cookies.set("refreshToken", refreshToken, {httpOnly: true, secure: true})
         return nextResponse
     } catch (error) {
-        return Response.json(new ApiResponse(412, false, "user login failed", {}))
+        return Response.json(new ApiResponse(412, false, "user login failed", {}, error))
     }
 }
