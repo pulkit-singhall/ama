@@ -7,33 +7,105 @@ import bcrypt from "bcrypt";
 import { generateAccessToken, generateRefreshToken } from "@/utils/tokens";
 
 export async function POST(req: NextRequest) {
-    dbConnect.then((connection) => { }).catch((error) => {
-        return Response.json(new ApiResponse(500, false, "database not connected", {error}))
-    })
+    dbConnect
+        .then((connection) => {})
+        .catch((error) => {
+            return Response.json(
+                new ApiResponse(
+                    500,
+                    false,
+                    "database not connected",
+                    {}
+                )
+            )
+        })
     
     try {
         const { email, password } = await req.json()
-        signinSchema.parse({ email, password })
+        signinSchema.parse({
+            email,
+            password
+        })
         const existUser = await User.findOne({ email })
         if (!existUser) {
-            return Response.json(new ApiResponse(412, false, "user not found", {}))
+            return Response.json(
+                new ApiResponse(
+                    412,
+                    false,
+                    "user not found",
+                    {}
+                )
+            )
         }
         if (!existUser.isVerified) {
-            return Response.json(new ApiResponse(412, false, "user is not verified", {}))
+            return Response.json(
+                new ApiResponse(
+                    412,
+                    false,
+                    "user is not verified",
+                    {}
+                )
+            )
         }
-        const result = await bcrypt.compare(password, existUser.password)
+        const result = await bcrypt.compare(
+            password,
+            existUser.password
+        )
         if (!result) {
-            return Response.json(new ApiResponse(400, false, "user password is wrong", {}))
+            return Response.json(
+                new ApiResponse(
+                    400,
+                    false,
+                    "user password is wrong",
+                    {}
+                )
+            )
         }
-        const accessToken = generateAccessToken(existUser._id, existUser.email)
-        const refreshToken = generateRefreshToken(existUser.email)
+        const accessToken = generateAccessToken(
+            existUser._id,
+            existUser.email
+        )
+        const refreshToken = generateRefreshToken(
+            existUser.email
+        )
         existUser.refreshToken = refreshToken
-        await existUser.save({ validateBeforeSave: false })
-        const nextResponse = NextResponse.json(new ApiResponse(200, true, "user logged in", {}))
-        nextResponse.cookies.set("accessToken", accessToken, {httpOnly: true, secure: true})
-        nextResponse.cookies.set("refreshToken", refreshToken, {httpOnly: true, secure: true})
+        await existUser.save({
+            validateBeforeSave: false
+        })
+        const nextResponse = NextResponse.json(
+            new ApiResponse(
+                200,
+                true,
+                "user logged in",
+                {}
+            )
+        )
+        nextResponse.cookies.set(
+            "accessToken",
+            accessToken,
+            {
+                httpOnly: true,
+                secure: true
+            }
+        )
+        nextResponse.cookies.set(
+            "refreshToken",
+            refreshToken,
+            {
+                httpOnly: true,
+                secure: true
+            }
+        )
         return nextResponse
     } catch (error) {
-        return Response.json(new ApiResponse(412, false, "user login failed", {}, error))
+        return Response.json(
+            new ApiResponse(
+                412,
+                false,
+                "user login failed",
+                {},
+                error
+            )
+        )
     }
 }
