@@ -23,7 +23,7 @@ export default function Signup() {
   },
     [setVerify, user])
 
-  async function pushLogin() {
+  async function loginReplace() {
     router.replace('/login')
   }
 
@@ -91,7 +91,9 @@ export default function Signup() {
           Already have an account?
           <button
             className="ml-2 text-sm text-orange-500"
-            onClick={pushLogin}>Login here!</button>
+            onClick={loginReplace}>
+            Login Here!
+          </button>
         </p>
       </div>
     </div>

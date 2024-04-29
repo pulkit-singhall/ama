@@ -26,6 +26,10 @@ export default function Login() {
             details
         ])
 
+    async function signupReplace() {
+        router.replace('/signup')
+    }
+    
     async function login() {
         if (verify) {
             axios.post("/api/users/login",
@@ -77,6 +81,15 @@ export default function Login() {
                     onClick={login}>Login</button>
                 <p
                     className="text-sm text-red-700">{errorMessage}</p>
+                <p
+                    className="text-sm">
+                    Didn't have an account?
+                    <button
+                        className="ml-2 text-sm text-orange-500"
+                        onClick={signupReplace}>
+                        Signup Here!
+                    </button>
+                </p>
             </div>
         </div>
     )
