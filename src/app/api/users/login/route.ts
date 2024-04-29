@@ -22,10 +22,12 @@ export async function POST(req: NextRequest) {
     
     try {
         const { email, password } = await req.json()
-        signinSchema.parse({
-            email,
-            password
-        })
+        signinSchema.parse(
+            {
+                email,
+                password
+            }
+        )
         const existUser = await User.findOne({ email })
         if (!existUser) {
             return Response.json(
@@ -69,9 +71,11 @@ export async function POST(req: NextRequest) {
             existUser.email
         )
         existUser.refreshToken = refreshToken
-        await existUser.save({
-            validateBeforeSave: false
-        })
+        await existUser.save(
+            {
+                validateBeforeSave: false
+            }
+        )
         const nextResponse = NextResponse.json(
             new ApiResponse(
                 200,
@@ -85,7 +89,8 @@ export async function POST(req: NextRequest) {
             accessToken,
             {
                 httpOnly: true,
-                secure: true
+                secure: true,
+                expires: Date.now() + 60*60*24*1000
             }
         )
         nextResponse.cookies.set(
@@ -93,7 +98,8 @@ export async function POST(req: NextRequest) {
             refreshToken,
             {
                 httpOnly: true,
-                secure: true
+                secure: true,
+                expires: Date.now() + 60*60*24*1000*5
             }
         )
         return nextResponse

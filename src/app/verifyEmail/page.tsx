@@ -1,20 +1,20 @@
 'use client'
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function VerifyEmail() {
     let router = useRouter()
+    let searchParams = useSearchParams()
 
     let [details, setDetails] = useState({
         code: "",
-        email: "",
     })
     let [verify, setVerify] = useState(false)
     let [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
-        if (details.code !== "" && details.email !== "") {
+        if (details.code !== "" && details.code.length === 6) {
             setVerify(true)
         }
         else {
@@ -25,9 +25,10 @@ export default function VerifyEmail() {
 
     async function verifyEmail() {
         if (verify) {
+            const userEmail = searchParams.get('email');
             axios.post("/api/users/verifyEmail",
                 {
-                    email: details.email,
+                    email: userEmail,
                     verifyEmailCode: details.code
                 })
                 .then((response) => {
@@ -55,13 +56,6 @@ export default function VerifyEmail() {
                 className="flex flex-col items-center justify-evenly bg-orange-50 w-96 h-96 rounded-xl">
                 <p
                     className="align-center">Verify Email</p>
-                <input
-                    className="mb-3 w-48 h-8 rounded-md p-2 border-black border"
-                    type="email"
-                    placeholder="email"
-                    onChange={(e) => {
-                        setDetails({ ...details, email: e.target.value })
-                    }} />
                 <input
                     className="mb-3 w-48 h-8 rounded-md p-2 border-black border"
                     type="text"

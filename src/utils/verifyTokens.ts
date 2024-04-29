@@ -8,39 +8,98 @@ import { User } from "@/model/user.model";
 import { generateAccessToken, generateRefreshToken } from "@/utils/tokens";
 
 export default async function verifyTokens(req: NextRequest): Promise<ApiResponse> {
-    dbConnect.then().catch((error) => { return Response.json(new ApiResponse(500, false, "database not connected", { error })) })
+    dbConnect
+        .then((connection) => {})
+        .catch((error) => {
+            return new ApiResponse(
+                    500,
+                    false,
+                    "database not connected",
+                    {},
+                    error,
+            )
+        })
     try {
-        const accessToken = req.cookies.get("accessToken")!
-        const refreshToken = req.cookies.get("refreshToken")!
+        const accessToken = req.cookies.get("accessToken")! || ''
+        const refreshToken = req.cookies.get("refreshToken")! || ''
         // const decodeAccess = jwt.verify(accessToken.value, process.env.ACCESS_TOKEN_KEY!)
-        const decodeAccess = jwtDecode<JwtPayload & { _id: any, email: string }>(accessToken.value)
+        const decodeAccess = jwtDecode<
+            JwtPayload & { _id: any, email: string }>
+        (
+            accessToken.value
+        )
         if (!decodeAccess) {
             // const decodeRefresh = jwt.verify(refreshToken.value, process.env.REFRESH_TOKEN_KEY!)
-            const decodeRefresh = jwtDecode<JwtPayload & { email: string }>(refreshToken.value)
+            const decodeRefresh = jwtDecode<
+                JwtPayload & { email: string }>
+            (
+                refreshToken.value
+            )
             if (!decodeRefresh) {
-                return new ApiResponse(500, false, "pls login again", {})
+                return new ApiResponse(
+                    500,
+                    false,
+                    "Pls login again",
+                    {}
+                )
             }
             else {
                 const email = decodeRefresh.email
                 const user = await User.findOne({ email })
                 if (!user) {
-                    return new ApiResponse(500, false, "token is wrong", {})
+                    return new ApiResponse(
+                        500,
+                        false,
+                        "user not found",
+                        {}
+                    )
                 }
                 const dbToken = user.refreshToken
                 if (dbToken != refreshToken.value) {
-                    return new ApiResponse(200, false, "token does not match", {})
+                    return new ApiResponse(
+                        400,
+                        false,
+                        "token does not match",
+                        {}
+                    )
                 }
                 const newAccess = generateAccessToken(user._id, user.email)
                 const newRefresh = generateRefreshToken(user.email)
                 user.refreshToken = newRefresh
-                await user.save({validateBeforeSave: false})
-                return new ApiResponse(202, true, "token verified", { email, accessToken: newAccess, refreshToken: newRefresh })
+                await user.save(
+                    {
+                        validateBeforeSave: false
+                    }
+                )
+                return new ApiResponse(
+                    202,
+                    true,
+                    "token verified",
+                    {
+                        email,
+                        accessToken: newAccess,
+                        refreshToken: newRefresh
+                    }
+                )
             }
         }
         else {
-            return new ApiResponse(200, true, "token verified", { email: decodeAccess.email })
+            return new ApiResponse(
+                200,
+                true,
+                "token verified",
+                {
+                    email: decodeAccess.email
+                }
+            )
         }
     } catch (error) {
-        return new ApiResponse(500, false, "error in token verification", {}, error)
+        return new ApiResponse(
+            500,
+            false,
+            "error in token verification",
+            {},
+            error
+        )
     }
 }
