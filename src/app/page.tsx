@@ -1,7 +1,23 @@
+'use client'
+import NavBar from "@/components/navbar"
+import { useRouter } from "next/navigation"
+
 export default function Home() {
+    let router = useRouter()
+    async function onSignup() {
+        router.push('/signup')
+    }
+
+    async function onLogin() {
+        router.push('/login')
+    }
+
     return (
         <>
-            <h1>Home page</h1>
+            <NavBar
+                onSignup={onSignup}
+                onLogin={onLogin}
+            />
         </>
     )
 }
