@@ -24,6 +24,7 @@ export interface UserInterface extends Document{
     password: string;
     verifyEmailCode: string;
     verifyEmailCodeExpiry: number;
+    isAcceptingMessages: boolean;
     isVerified: boolean;
     messages: Array<MessageInterface>
     forgotPasswordCode: string;
@@ -63,6 +64,10 @@ const userSchema: Schema<UserInterface> = new Schema({
     },
     forgotPasswordCodeExpiry: {
         type: Number,
+    },
+    isAcceptingMessages: {
+        type: Boolean,
+        default: true
     },
     refreshToken: {
         type: String,
