@@ -21,22 +21,10 @@ export default async function verifyTokens(req: NextRequest): Promise<TokenRespo
             )
         })
     try {
-        const accessToken = req.cookies.get("accessToken")! || ''
-        const refreshToken = req.cookies.get("refreshToken")! || ''
-        // const decodeAccess = jwt.verify(accessToken.value, process.env.ACCESS_TOKEN_KEY!)
-        const decodeAccess = jwtDecode<
-            JwtPayload & { _id: any, email: string }>
-        (
-            accessToken.value
-        )
-        if (!decodeAccess) {
-            // const decodeRefresh = jwt.verify(refreshToken.value, process.env.REFRESH_TOKEN_KEY!)
-            const decodeRefresh = jwtDecode<
-                JwtPayload & { email: string }>
-            (
-                refreshToken.value
-            )
-            if (!decodeRefresh) {
+        const accessToken = req.cookies.get("accessToken")
+        const refreshToken = req.cookies.get("refreshToken")
+        if (!accessToken) {
+            if (!refreshToken) {
                 return new TokenResponse(
                     500,
                     false,
@@ -47,6 +35,12 @@ export default async function verifyTokens(req: NextRequest): Promise<TokenRespo
                 )
             }
             else {
+                // const decodeRefresh = jwt.verify(refreshToken.value, process.env.REFRESH_TOKEN_KEY!)
+                const decodeRefresh = jwtDecode<
+                    JwtPayload & { email: string }>
+                (
+                    refreshToken.value
+                )
                 const email = decodeRefresh.email
                 const user = await User.findOne({ email })
                 if (!user) {
@@ -60,7 +54,7 @@ export default async function verifyTokens(req: NextRequest): Promise<TokenRespo
                     )
                 }
                 const dbToken = user.refreshToken
-                if (dbToken != refreshToken.value) {
+                if (dbToken != refreshToken?.value) {
                     return new TokenResponse(
                         500,
                         false,
@@ -89,6 +83,12 @@ export default async function verifyTokens(req: NextRequest): Promise<TokenRespo
             }
         }
         else {
+            // const decodeAccess = jwt.verify(accessToken.value, process.env.ACCESS_TOKEN_KEY!)
+            const decodeAccess = jwtDecode<
+                JwtPayload & { _id: any, email: string }>
+            (
+                accessToken.value
+            )
             return new TokenResponse(
                 200,
                 true,

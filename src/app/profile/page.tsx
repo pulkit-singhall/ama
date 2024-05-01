@@ -7,7 +7,7 @@ import ProfileNavbar from "@/components/profileNavbar"
 export default function Profile() {
     let router = useRouter()
     let [username, setUsername] = useState('')
-    let [messages, setMessage] = useState([])
+    let [messages, setMessages] = useState([])
     let [accepting, setAccepting] = useState(true)
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function Profile() {
                 const user = json.data.user
                 setUsername(`Welcome Back!  ${user.username}`)
                 setAccepting(user.isAcceptingMessages)
-                setMessage(user.messages)
+                setMessages(user.messages)
             }
             else {
                 setUsername(`User not found! : ${json.message}`)
@@ -38,20 +38,33 @@ export default function Profile() {
             .then((res) => {
                 const data = res.data
                 if (!data.success) {
-                    console.log(`error in logout: ${data.message}`)
+                    alert(`Error in logout: ${data.message}`)
                 }
                 else {
                     router.replace('/')
                 }
             })
             .catch((err) => {
-                console.log(`error in logout: ${err.message}`)
+                alert(`Error in logout: ${err.message}`)
             }
         )
     }
 
     async function toggleAcceptingStatus() {
-        setAccepting(!accepting)
+        axios.post('/api/users/toggleStatus',)
+            .then((res) => {
+                const data = res.data
+                if (data.success) {
+                    setAccepting(!accepting) // frontend 
+                }
+                else {
+                    alert(`Error in status toggling : ${data.message}`)
+                }
+            })
+            .catch((err) => {
+                alert(`Error in status toggling : ${err.message}`)
+            }
+        )
     }
 
     return (
