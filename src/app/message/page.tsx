@@ -3,6 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import axios from "axios"
 import { useEffect, useState, useRef } from "react"
 import NavBar from "@/components/navbar"
+import { Suspense } from "react"
 
 export default function Message() {
     let router = useRouter()
@@ -65,6 +66,7 @@ export default function Message() {
 
     return (
         <div className="flex flex-col items-center justify-center">
+            <Suspense>
             <NavBar
                 onLogin={onLogin}
                 onSignup={onSignup}
@@ -103,7 +105,8 @@ export default function Message() {
                     bg-blue-950 hover:bg-blue-950">
                     Send Message
                 </button>
-            </div>
+                </div>
+            </Suspense>
         </div>
     )
 }
