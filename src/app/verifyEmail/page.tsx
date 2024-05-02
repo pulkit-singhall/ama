@@ -51,7 +51,8 @@ export default function VerifyEmail() {
     }
 
     return (
-        <div className="flex items-center h-screen justify-center">
+        <div className="flex items-center h-screen justify-center 
+        w-screen bg-blue-950">
             <div
                 className="flex flex-col items-center justify-evenly 
                 bg-white w-96 h-96 rounded-xl">

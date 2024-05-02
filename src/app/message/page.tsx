@@ -52,7 +52,7 @@ export default function Message() {
             .then((res) => {
                 const data = res.data
                 if (data.success) {
-                    
+                    resetContent()
                 }
                 else {
                     alert(`Error in sending the message : ${data.message}`)

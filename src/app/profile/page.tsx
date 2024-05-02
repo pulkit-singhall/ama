@@ -3,6 +3,7 @@ import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import ProfileNavbar from "@/components/profileNavbar"
+import MessageGrid from "@/components/messageGrid"
 
 export default function Profile() {
     let router = useRouter()
@@ -104,7 +105,7 @@ export default function Profile() {
                     Your Unique Link
                 </p>
                 <div
-                    className="flex flex-row items-center">
+                    className="flex flex-row items-center text-blue-950">
                     <p
                         className="mr-2 bg-gray-200 rounded-md h-10 p-2 w-screen 
                         pl-3 text-start "
@@ -112,7 +113,7 @@ export default function Profile() {
                     </p>
                     <button
                         className="bg-blue-800 hover:bg-blue-950 text-white
-                        rounded-md h-10 w-16 ml-2 p-1"
+                        rounded-md h-10 w-20 ml-2 p-1"
                         onClick={copyUniqueLink}
                     >
                         Copy
@@ -121,8 +122,11 @@ export default function Profile() {
             </div>
             <div className="flex flex-col m-3 p-3 mt-0">
                 <p>
-                    Messages you received in last 24 hours :
+                    Your Messages - 
                 </p>
+                <MessageGrid
+                    messages={messages}
+                />
             </div>
         </div>
     )

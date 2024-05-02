@@ -1,24 +1,23 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 
-export interface MessageInterface extends Document{
+export interface MessageInterface{
     content: string;
-    createdAt: Date
+    createdAt: string
 }
 
-const messageSchema: Schema<MessageInterface> = new Schema({
+export const messageSchema: Schema<MessageInterface> = new Schema({
     content: {
         type: String,
         required: true,
     },
     createdAt: {
-        type: Date,
+        type: String,
         required: true,
-        default: Date.now,
     }
 });
 
-export interface UserInterface extends Document{
+export interface UserInterface{
     username: string;
     email: string;
     password: string;
@@ -32,7 +31,7 @@ export interface UserInterface extends Document{
     refreshToken: string;
 }
 
-const userSchema: Schema<UserInterface> = new Schema({
+export const userSchema: Schema<UserInterface> = new Schema({
     username: {
         type: String,
         unique: true,
@@ -80,4 +79,6 @@ userSchema.pre("save", async function () {
     }
 })
 
-export const User = mongoose.models.User as mongoose.Model<UserInterface> || mongoose.model<UserInterface>("User", userSchema)
+export const User =
+    mongoose.models.User as mongoose.Model<UserInterface> ||
+    mongoose.model<UserInterface>("User", userSchema)
