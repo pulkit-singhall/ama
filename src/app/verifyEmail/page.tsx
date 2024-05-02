@@ -46,16 +46,19 @@ export default function VerifyEmail() {
                 })
         }
         else {
-            setErrorMessage('Pls fill the credentials!')
+            setErrorMessage('Pls fill the code!')
         }
     }
 
     return (
         <div className="flex items-center h-screen justify-center">
             <div
-                className="flex flex-col items-center justify-evenly bg-orange-50 w-96 h-96 rounded-xl">
+                className="flex flex-col items-center justify-evenly 
+                bg-white w-96 h-96 rounded-xl">
                 <p
-                    className="align-center">Verify Email</p>
+                    className="align-center text-blue-950">
+                    Verify Email
+                </p>
                 <input
                     className="mb-3 w-48 h-8 rounded-md p-2 border-black border"
                     type="text"
@@ -64,7 +67,7 @@ export default function VerifyEmail() {
                         setDetails({ ...details, code: e.target.value })
                     }} />
                 <button
-                    className={`${verify ? 'bg-orange-600' : 'bg-orange-400'} rounded-md text-white h-10 w-48`}
+                    className={`${verify ? 'bg-blue-950' : 'bg-blue-800'} rounded-md text-white h-10 w-48`}
                     onClick={verifyEmail}>Verify Email</button>
                 <p
                     className="text-sm text-red-700">{errorMessage}</p>

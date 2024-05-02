@@ -1,6 +1,6 @@
 'use client'
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import ProfileNavbar from "@/components/profileNavbar"
 
@@ -9,6 +9,8 @@ export default function Profile() {
     let [username, setUsername] = useState('')
     let [messages, setMessages] = useState([])
     let [accepting, setAccepting] = useState(true)
+
+    let uniqueLink = useRef<HTMLParagraphElement>(null)
 
     useEffect(() => {
         profileFetch()
@@ -23,6 +25,10 @@ export default function Profile() {
                 setUsername(`Welcome Back!  ${user.username}`)
                 setAccepting(user.isAcceptingMessages)
                 setMessages(user.messages)
+                if (uniqueLink.current) {
+                    uniqueLink.current.innerHTML =
+                        `http://localhost:3000/message?username=${user.username}`
+                }
             }
             else {
                 setUsername(`User not found! : ${json.message}`)
@@ -50,6 +56,13 @@ export default function Profile() {
         )
     }
 
+    async function copyUniqueLink() {
+        if (uniqueLink.current) {
+            const link = uniqueLink.current.innerHTML
+            window.navigator.clipboard.writeText(link)
+        }
+    }
+
     async function toggleAcceptingStatus() {
         axios.post('/api/users/toggleStatus',)
             .then((res) => {
@@ -68,13 +81,13 @@ export default function Profile() {
     }
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col items-evenly">
             <ProfileNavbar
                 username={username}
                 onLogout = {replaceLogout}
             />
             <div
-                className="flex flex-row p-3 m-3 items-center">
+                className="flex flex-row p-3 m-3 mb-0 items-center">
                 <p className="text-black text-1xl mr-2">
                     Your Message Accepting Status : 
                 </p>
@@ -85,7 +98,28 @@ export default function Profile() {
                     {accepting ? 'YES' : 'NO'}
                 </button>
             </div>
-            <div className="flex flex-col m-3 p-3">
+            <div
+                className="flex flex-col m-3 mt-0 mb-0 p-3">
+                <p className="mb-1">
+                    Your Unique Link
+                </p>
+                <div
+                    className="flex flex-row items-center">
+                    <p
+                        className="mr-2 bg-gray-200 rounded-md h-10 p-2 w-screen 
+                        pl-3 text-start "
+                        ref={uniqueLink}>
+                    </p>
+                    <button
+                        className="bg-blue-800 hover:bg-blue-950 text-white
+                        rounded-md h-10 w-16 ml-2 p-1"
+                        onClick={copyUniqueLink}
+                    >
+                        Copy
+                    </button>
+                </div>
+            </div>
+            <div className="flex flex-col m-3 p-3 mt-0">
                 <p>
                     Messages you received in last 24 hours :
                 </p>

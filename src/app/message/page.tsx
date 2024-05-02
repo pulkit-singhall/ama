@@ -9,7 +9,7 @@ export default function Message() {
     let searchParams = useSearchParams()
 
     // useRef
-    let contentRef = useRef(null)
+    let contentRef = useRef<HTMLTextAreaElement>(null)
 
     // useState
     let [username, setUsername] = useState('')
@@ -32,9 +32,11 @@ export default function Message() {
     }
 
     function resetContent() {
-        contentRef.current.value = ''
-        setMessage('')
-        setErrorMessage('')
+        if (contentRef.current) {
+            contentRef.current.value = ''
+            setMessage('')
+            setErrorMessage('')
+        }
     }
 
     async function sendMessage() {
@@ -46,7 +48,7 @@ export default function Message() {
             setErrorMessage('content should be atleast 5 characters')
             return
         }
-        axios.post('/api/messages/send', { content: message })
+        axios.post('/api/messages/send', { content: message, username })
             .then((res) => {
                 const data = res.data
                 if (data.success) {
@@ -98,7 +100,7 @@ export default function Message() {
                 <button
                     onClick={sendMessage}
                     className="text-white p-1 ml-2 rounded-md h-9 w-32
-                    bg-gray-500 hover:bg-gray-600">
+                    bg-blue-800 hover:bg-blue-950">
                     Send Message
                 </button>
             </div>

@@ -57,9 +57,12 @@ export default function Signup() {
     <div
       className="flex items-center justify-center h-screen">
       <div
-        className="flex flex-col items-center justify-evenly bg-orange-50 w-96 h-96 rounded-xl">
+        className="flex flex-col items-center justify-evenly 
+        bg-white w-96 h-96 rounded-xl">
         <p
-          className="align-center">Create Account</p>
+          className="align-center text-blue-950">
+          Create Account
+        </p>
         <input
           className="mb-1 w-48 h-8 rounded-md p-2 border-black border"
           type="text"
@@ -82,7 +85,8 @@ export default function Signup() {
             setUser({ ...user, password: e.target.value })
           }} />
         <button
-          className={`${verify ? 'bg-orange-600' : 'bg-orange-400'} rounded-md text-white h-10 w-48`}
+          className={`${verify ? 'bg-blue-950' : 'bg-blue-800'} rounded-md 
+          text-white h-10 w-48`}
           onClick={signUp}>Sign Up</button>
         <p
           className="text-sm text-red-700">{errorMessage}</p>
@@ -90,7 +94,7 @@ export default function Signup() {
           className="text-sm">
           Already have an account?
           <button
-            className="ml-2 text-sm text-orange-500"
+            className="ml-2 text-sm text-blue-950"
             onClick={loginReplace}>
             Login Here!
           </button>

@@ -3,7 +3,7 @@ export default function NavBar({onLogin, onSignup}: any) {
         <>
             <div
                 className="
-                w-screen h-16 bg-orange-400
+                w-screen h-16 bg-blue-950
                 flex flex-row items-center
                 justify-between p-8"
             >
@@ -15,14 +15,14 @@ export default function NavBar({onLogin, onSignup}: any) {
                     <button
                         className="text-white h-9 border-white 
                         border-2 rounded-md w-24 text-md p-1 mr-5
-                        hover:bg-white hover:text-black"
+                        hover:bg-white hover:text-blue-950"
                         onClick={()=>onSignup()}
                     >
                         Signup
                     </button>
                     <button className="text-white h-9 border-white 
                         border-2 rounded-md w-24 text-md
-                        hover:bg-white hover:text-black"
+                        hover:bg-white hover:text-blue-950"
                         onClick={()=>onLogin()}
                     >
                         Login
