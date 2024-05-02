@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
             "accessToken",
             "",
             {
-                httpOnly: true,
+                httpOnly: false,
                 secure: true,
                 expires: Date.now()
             }
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
             "refreshToken",
             "",
             {
-                httpOnly: true,
+                httpOnly: false,
                 secure: true,
                 expires: Date.now()
             }
