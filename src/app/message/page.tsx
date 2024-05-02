@@ -5,8 +5,9 @@ import { useEffect, useState, useRef } from "react"
 import NavBar from "@/components/navbar"
 import { Suspense } from "react"
 
-export default function Message() {
+const Message = () => {
     let router = useRouter()
+    let searchParams = useSearchParams()
 
     // useRef
     let contentRef = useRef<HTMLTextAreaElement>(null)
@@ -17,12 +18,11 @@ export default function Message() {
     let [message, setMessage] = useState('')
 
     useEffect(() => {
-        let searchParams = useSearchParams()
         let userName = searchParams.get('username')
         if (userName) {
             setUsername(userName)
         }
-    }, [])
+    }, [searchParams, setUsername])
     
     async function onSignup() {
         router.push('/signup')
@@ -65,7 +65,6 @@ export default function Message() {
     }
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
         <div className="flex flex-col items-center justify-center">
             <NavBar
                 onLogin={onLogin}
@@ -107,6 +106,13 @@ export default function Message() {
                 </button>
                 </div>
             </div>
-        </Suspense>
     )
+}
+
+export default function MessageComponent() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Message />
+        </Suspense>
+    );
 }

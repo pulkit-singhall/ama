@@ -4,8 +4,9 @@ import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Suspense } from "react"
 
-export default function VerifyEmail() {
+const VerifyEmail = () => {
     let router = useRouter()
+    let searchParams = useSearchParams()
 
     let [details, setDetails] = useState({
         code: "",
@@ -25,7 +26,6 @@ export default function VerifyEmail() {
 
     async function verifyEmail() {
         if (verify) {
-            let searchParams = useSearchParams()
             const userEmail = searchParams.get('email');
             axios.post("/api/users/verifyEmail",
                 {
@@ -52,7 +52,6 @@ export default function VerifyEmail() {
     }
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
         <div className="flex items-center h-screen justify-center 
         w-screen bg-blue-950">
             <div
@@ -76,6 +75,13 @@ export default function VerifyEmail() {
                     className="text-sm text-red-700">{errorMessage}</p>
                 </div>
             </div>
-        </Suspense>
     )
+}
+
+export default function Verify() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <VerifyEmail />
+        </Suspense>
+    );
 }
