@@ -7,7 +7,6 @@ import { Suspense } from "react"
 
 export default function Message() {
     let router = useRouter()
-    let searchParams = useSearchParams()
 
     // useRef
     let contentRef = useRef<HTMLTextAreaElement>(null)
@@ -18,11 +17,12 @@ export default function Message() {
     let [message, setMessage] = useState('')
 
     useEffect(() => {
+        let searchParams = useSearchParams()
         let userName = searchParams.get('username')
         if (userName) {
             setUsername(userName)
         }
-    }, [searchParams, setUsername])
+    }, [])
     
     async function onSignup() {
         router.push('/signup')
@@ -65,8 +65,8 @@ export default function Message() {
     }
 
     return (
+        <Suspense fallback={<div>Loading...</div>}>
         <div className="flex flex-col items-center justify-center">
-            <Suspense>
             <NavBar
                 onLogin={onLogin}
                 onSignup={onSignup}
@@ -106,7 +106,7 @@ export default function Message() {
                     Send Message
                 </button>
                 </div>
-            </Suspense>
-        </div>
+            </div>
+        </Suspense>
     )
 }

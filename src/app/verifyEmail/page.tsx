@@ -6,7 +6,6 @@ import { Suspense } from "react"
 
 export default function VerifyEmail() {
     let router = useRouter()
-    let searchParams = useSearchParams()
 
     let [details, setDetails] = useState({
         code: "",
@@ -26,6 +25,7 @@ export default function VerifyEmail() {
 
     async function verifyEmail() {
         if (verify) {
+            let searchParams = useSearchParams()
             const userEmail = searchParams.get('email');
             axios.post("/api/users/verifyEmail",
                 {
@@ -52,9 +52,9 @@ export default function VerifyEmail() {
     }
 
     return (
+        <Suspense fallback={<div>Loading...</div>}>
         <div className="flex items-center h-screen justify-center 
         w-screen bg-blue-950">
-            <Suspense>
             <div
                 className="flex flex-col items-center justify-evenly 
                 bg-white w-96 h-96 rounded-xl">
@@ -75,7 +75,7 @@ export default function VerifyEmail() {
                 <p
                     className="text-sm text-red-700">{errorMessage}</p>
                 </div>
-            </Suspense>
-        </div>
+            </div>
+        </Suspense>
     )
 }
