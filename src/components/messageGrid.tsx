@@ -9,6 +9,7 @@ export default function MessageGrid(props: any) {
             <MessageCard
                 content={messages[i].content}
                 createdAt={messages[i].createdAt}
+                _id={messages[i]._id}
             />
         )
     }

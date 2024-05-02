@@ -21,7 +21,7 @@ export default function Message() {
         if (userName) {
             setUsername(userName)
         }
-    }, [])
+    }, [searchParams, setUsername])
     
     async function onSignup() {
         router.push('/signup')
@@ -100,7 +100,7 @@ export default function Message() {
                 <button
                     onClick={sendMessage}
                     className="text-white p-1 ml-2 rounded-md h-9 w-32
-                    bg-blue-800 hover:bg-blue-950">
+                    bg-blue-950 hover:bg-blue-950">
                     Send Message
                 </button>
             </div>

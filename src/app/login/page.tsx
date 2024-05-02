@@ -88,7 +88,7 @@ export default function Login() {
                     className="text-sm text-red-700">{errorMessage}</p>
                 <p
                     className="text-sm">
-                    Didn't have an account?
+                    {`Didn't have an account?`}
                     <button
                         className="ml-2 text-sm text-blue-950"
                         onClick={signupReplace}>

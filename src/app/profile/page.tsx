@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import ProfileNavbar from "@/components/profileNavbar"
 import MessageGrid from "@/components/messageGrid"
+import { Switch } from "@/components/ui/switch"
 
 export default function Profile() {
     let router = useRouter()
@@ -88,31 +89,32 @@ export default function Profile() {
                 onLogout = {replaceLogout}
             />
             <div
-                className="flex flex-row p-3 m-3 mb-0 items-center">
-                <p className="text-black text-1xl mr-2">
-                    Your Message Accepting Status : 
+                className="flex flex-row p-3 m-16 mb-0 mt-6 items-center">
+                <p className="text-blue-950 text-1xl mr-2">
+                    <b>Your Message Accepting Status : </b>
                 </p>
-                <button
-                    className={`${accepting ? 'bg-green-600' : 'bg-red-600'} 
-                    text-white ml-1 w-14 h-7 rounded-md`}
-                    onClick={toggleAcceptingStatus}>
-                    {accepting ? 'YES' : 'NO'}
-                </button>
+                <Switch
+                    className="data-[state=checked]:bg-blue-950
+                    data-[state=unchecked]:bg-gray-200"
+                    checked={accepting}
+                    onCheckedChange={toggleAcceptingStatus}
+                />
             </div>
             <div
-                className="flex flex-col m-3 mt-0 mb-0 p-3">
-                <p className="mb-1">
-                    Your Unique Link
+                className="flex flex-col m-16 mt-0 mb-0 p-3">
+                <p className="mb-1 text-blue-950">
+                    <b>Your Unique Link</b>
                 </p>
                 <div
-                    className="flex flex-row items-center text-blue-950">
+                    className="flex flex-row items-center">
                     <p
                         className="mr-2 bg-gray-200 rounded-md h-10 p-2 w-screen 
-                        pl-3 text-start "
-                        ref={uniqueLink}>
+                        pl-3 text-start text-blue-950"
+                        ref={uniqueLink}
+                    >
                     </p>
                     <button
-                        className="bg-blue-800 hover:bg-blue-950 text-white
+                        className="bg-blue-950 hover:bg-blue-950 text-white
                         rounded-md h-10 w-20 ml-2 p-1"
                         onClick={copyUniqueLink}
                     >
@@ -120,9 +122,10 @@ export default function Profile() {
                     </button>
                 </div>
             </div>
-            <div className="flex flex-col m-3 p-3 mt-0">
-                <p>
-                    Your Messages - 
+            <div className="flex flex-col m-16 p-3 mt-0">
+                <p
+                    className="text-blue-950">
+                    <b>Your Messages - </b>
                 </p>
                 <MessageGrid
                     messages={messages}
