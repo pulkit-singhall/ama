@@ -1,16 +1,22 @@
 'use client'
 import axios from "axios"
-import { useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import ProfileNavbar from "@/components/profileNavbar"
 import MessageGrid from "@/components/messageGrid"
 import { Switch } from "@/components/ui/switch"
 
-export default function Profile() {
+const Profile = () => {
     let router = useRouter()
+
     let [username, setUsername] = useState('')
     let [messages, setMessages] = useState([])
     let [accepting, setAccepting] = useState(true)
+    
+    const origin =
+        typeof window !== 'undefined' && window.location.origin
+            ? window.location.origin
+            : '';
 
     let uniqueLink = useRef<HTMLParagraphElement>(null)
 
@@ -29,7 +35,7 @@ export default function Profile() {
                 setMessages(user.messages)
                 if (uniqueLink.current) {
                     uniqueLink.current.innerHTML =
-                        `http://localhost:3000/message?username=${user.username}`
+                        `${origin}/message?username=${user.username}`
                 }
             }
             else {
@@ -132,5 +138,13 @@ export default function Profile() {
                 />
             </div>
         </div>
+    )
+}
+
+export default function ProfileComponent() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Profile />
+        </Suspense>
     )
 }

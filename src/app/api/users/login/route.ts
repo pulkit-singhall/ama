@@ -88,8 +88,6 @@ export async function POST(req: NextRequest) {
             "accessToken",
             accessToken,
             {
-                httpOnly: false,
-                secure: true,
                 expires: Date.now() + 60*60*24*1000
             }
         )
@@ -97,8 +95,6 @@ export async function POST(req: NextRequest) {
             "refreshToken",
             refreshToken,
             {
-                httpOnly: false,
-                secure: true,
                 expires: Date.now() + 60*60*24*1000*5
             }
         )

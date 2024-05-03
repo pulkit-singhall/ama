@@ -14,6 +14,8 @@ export default function MessageCard({ content, createdAt, _id }: any) {
                 </p>
                 <Alertdialog
                     _id={_id}
+                    content={content}
+                    createdAt={createdAt}
                 />
             </div>
             <p

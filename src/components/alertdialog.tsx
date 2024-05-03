@@ -10,17 +10,27 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { useRouter } from "next/navigation";
 
 export default function Alertdialog(props: any) {
+    let router = useRouter()
     const _id = props._id;
+    const content = props.content
+    const createdAt = props.createdAt
 
     async function deleteMessage() {
-        axios.post("/api/messages/delete", { _id })
+        axios.post("/api/messages/delete", { _id, content, createdAt })
             .then((res) => { 
-
+                const data = res.data
+                if (data.success) {
+                    router.refresh()
+                }
+                else {
+                    alert(`Error in deleting this message: ${data.message}`)
+                }
             })
             .catch((err) => { 
-                
+                alert(`Error in deleting this message: ${err.message}`)
             })
     }
 

@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
             )
         }
         const message: MessageInterface = {
-            content,
+            content : content.trim(),
             createdAt: new Date().toJSON()
         }
         user.messages.push(message)
