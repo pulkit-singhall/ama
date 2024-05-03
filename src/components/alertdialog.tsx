@@ -11,8 +11,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation";
+import { useToast } from "./ui/use-toast";
 
 export default function Alertdialog(props: any) {
+    let { toast } = useToast()
+    
     let router = useRouter()
     const _id = props._id;
     const content = props.content
@@ -23,6 +26,9 @@ export default function Alertdialog(props: any) {
             .then((res) => { 
                 const data = res.data
                 if (data.success) {
+                    toast({
+                        title: 'Message deleted successfully'
+                    })
                     router.refresh()
                 }
                 else {

@@ -14,19 +14,18 @@ export default function HomeCarousel() {
         `Decided to dance like no one's watching in my room. Best decision ever!`
     ]
     return (
-        <Carousel>
-            <CarouselContent className="max-w-md max-h-sm m-0 p-0 flex 
-            items-center justify-center">
-                {/* {Array.from({ length: 5 }).map((_, index) => (
-                    <CarouselItem key={index}>
-                        <div className="rounded-md m-auto p-5 flex items-center
+        <Carousel className="w-full max-w-md">
+            <CarouselContent className="flex flex-row items-center">
+                {Array.from({ length: 5 }).map((_, index) => (
+                <CarouselItem key={index}>
+                    <div className="rounded-md m-auto p-5 flex items-center
                         justify-center bg-blue-950">
-                            <p className="m-3 text-xl font-serif text-white p-1">
-                                {items[index]}
-                            </p>
-                        </div>
-                    </CarouselItem>
-                ))} */}
+                        <p className="m-3 text-xl font-serif text-white p-1">
+                            {items[index]}
+                        </p>
+                    </div>
+                </CarouselItem>
+                ))}
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />

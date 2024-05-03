@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
                 new ApiResponse(
                     500,
                     false,
-                    "token error",
+                    `token error: ${tokenRes.message}`,
                     {}
                 )
             )

@@ -5,11 +5,14 @@ import { useEffect, useState, useRef } from "react"
 import NavBar from "@/components/navbar"
 import { Suspense } from "react"
 import Footer from "@/components/footer"
+import { useToast } from "@/components/ui/use-toast"
 
 const Message = () => {
     let router = useRouter()
     let searchParams = useSearchParams()
 
+    let {toast} = useToast()
+ 
     // useRef
     let contentRef = useRef<HTMLTextAreaElement>(null)
 
@@ -55,6 +58,9 @@ const Message = () => {
                 const data = res.data
                 if (data.success) {
                     resetContent()
+                    toast({
+                        title: 'Message sent successfully'
+                    })
                 }
                 else {
                     alert(`Error in sending the message : ${data.message}`)

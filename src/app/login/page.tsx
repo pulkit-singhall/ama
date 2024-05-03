@@ -2,10 +2,13 @@
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function Login() {
     const router = useRouter()
 
+    let {toast} = useToast()
+ 
     let [details, setDetails] = useState({
         email: "",
         password: ""
@@ -40,7 +43,9 @@ export default function Login() {
                 .then((res) => {
                     const data = res['data']
                     if (data.success) {
-                        setErrorMessage('User logged in successfully')
+                        toast({
+                            title: 'User logged in successfully'
+                        })
                         router.replace('/profile')
                     }
                     else {

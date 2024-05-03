@@ -5,9 +5,12 @@ import { useRouter } from "next/navigation"
 import ProfileNavbar from "@/components/profileNavbar"
 import MessageGrid from "@/components/messageGrid"
 import { Switch } from "@/components/ui/switch"
+import { useToast } from "@/components/ui/use-toast"
 
 const Profile = () => {
     let router = useRouter()
+
+    let {toast} = useToast()
 
     let [username, setUsername] = useState('')
     let [messages, setMessages] = useState([])
@@ -25,7 +28,7 @@ const Profile = () => {
     },[])
 
     async function profileFetch() {
-        axios.get('/api/users/profile')
+        axios.post('/api/users/profile')
         .then((res) => {
             const json = res.data
             if (json.success) {
@@ -68,6 +71,9 @@ const Profile = () => {
         if (uniqueLink.current) {
             const link = uniqueLink.current.innerHTML
             window.navigator.clipboard.writeText(link)
+            toast({
+              title: 'Link copied to clipboard'
+            })
         }
     }
 
@@ -77,6 +83,9 @@ const Profile = () => {
                 const data = res.data
                 if (data.success) {
                     setAccepting(!accepting) // frontend 
+                    toast({
+                        title: 'Message status toggled',
+                    })
                 }
                 else {
                     alert(`Error in status toggling : ${data.message}`)

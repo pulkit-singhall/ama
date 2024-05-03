@@ -4,7 +4,7 @@ import ApiResponse from "@/types/apiResponse";
 import verifyTokens from "@/utils/verifyTokens";
 import { User } from "@/model/user.model";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
     dbConnect
         .then((connection) => {})
         .catch((error) => {

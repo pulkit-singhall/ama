@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast"
 
 export default function Signup() {
   const router = useRouter()
@@ -12,6 +13,8 @@ export default function Signup() {
   })
   let [verify, setVerify] = useState(false)
   let [errorMessage, setErrorMessage] = useState('')
+
+  let {toast} = useToast()
 
   useEffect(() => {
     if (user.email !== "" && user.password !== "" && user.username !== "") {
@@ -41,7 +44,9 @@ export default function Signup() {
             setErrorMessage(data.message)
           }
           else {
-            setErrorMessage('User signed up successfully')
+            toast({
+              title: 'User signed up successfully'
+            })
             router.push(`/verifyEmail?email=${user.email}`)
           }
         }).catch((err) => {

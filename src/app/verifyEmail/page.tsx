@@ -3,10 +3,13 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Suspense } from "react"
+import { useToast } from "@/components/ui/use-toast"
 
 const VerifyEmail = () => {
     let router = useRouter()
     let searchParams = useSearchParams()
+
+    const { toast } = useToast()
 
     let [details, setDetails] = useState({
         code: "",
@@ -35,7 +38,10 @@ const VerifyEmail = () => {
                 .then((response) => {
                     const data = response['data']
                     if (data.success) {
-                        setErrorMessage('User verified successfully')
+                        // toast
+                        toast({
+                            title: 'User verified successfully'
+                        })
                         router.replace('/login')
                     }
                     else {
