@@ -36,5 +36,6 @@ export const config = {
         '/login/:path*',
         '/verifyEmail/:path*',
         '/profile/:path*',
+        '/emailCollect:path*'
     ],
 }

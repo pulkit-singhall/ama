@@ -14,12 +14,17 @@ export default function Home() {
         router.push('/login')
     }
 
+    async function onVerify() {
+        router.push('/emailCollect')
+    }
+
     return (
         <div
             className="flex flex-col items-center h-screen w-screen justify-between">
             <NavBar
                 onSignup={onSignup}
                 onLogin={onLogin}
+                onVerify={onVerify}
             />
             <div className="flex flex-col items-center justify-evenly">
                 <div

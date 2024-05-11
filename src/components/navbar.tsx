@@ -1,4 +1,4 @@
-export default function NavBar({onLogin, onSignup}: any) {
+export default function NavBar({onLogin, onSignup, onVerify}: any) {
     return (
         <>
             <div
@@ -19,6 +19,14 @@ export default function NavBar({onLogin, onSignup}: any) {
                         onClick={()=>onSignup()}
                     >
                         Signup
+                    </button>
+                    <button
+                        className="text-white h-9 border-white 
+                        border-2 rounded-md w-auto text-md p-1 mr-5
+                        hover:bg-white hover:text-blue-950"
+                        onClick={() => onVerify()}
+                    >
+                        Verify Email
                     </button>
                     <button className="text-white h-9 border-white 
                         border-2 rounded-md w-24 text-md

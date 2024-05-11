@@ -1,4 +1,4 @@
-import { verifyEmail } from "@/utils/verifyEmail";
+import { sendNodeMail } from "@/utils/nodeMailer";
 import dbConnect from "@/db/db";
 import { User } from "@/model/user.model";
 import ApiResponse from "@/types/apiResponse";
@@ -74,9 +74,9 @@ export async function POST(req: NextRequest) {
                 )
             )
         }
-        const emailResult = await verifyEmail(
-            email,
+        const emailResult = await sendNodeMail(
             username,
+            email,
             verifyEmailCode
         )
         if (!emailResult.success) {

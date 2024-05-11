@@ -19,11 +19,11 @@ export async function POST(req: NextRequest) {
         })
     try {
         const { verifyEmailCode, email } = await req.json()
-        const userByEmail = await User.findOne({ email })
         verifyCodeSchema.parse({
             code: verifyEmailCode,
             email
         })
+        const userByEmail = await User.findOne({ email })
         if (!userByEmail) {
             return Response.json
                 (new ApiResponse(
@@ -37,8 +37,8 @@ export async function POST(req: NextRequest) {
         if (userByEmail.isVerified) {
             return Response.json(
                 new ApiResponse(
-                    200,
-                    true,
+                    412,
+                    false,
                     "user is already verified",
                     {}
                 ),
